@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">NavigationApp</string>
+    <string name="text_view_a">Экран A</string>
+    <string name="button_text_to_b">Перейти к экрану B</string>
+    <string name="text_view_b">Экран B</string>
+    <string name="button_text_to_c">Перейти к экрану C</string>
+    <string name="button_text_to_a">Перейти к экрану A</string>
+    <string name="text_view_c">Экран C</string>
 </resources>

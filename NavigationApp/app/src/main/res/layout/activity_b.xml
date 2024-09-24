@@ -2,31 +2,31 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_a"
+    android:id="@+id/activity_b"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFCDD2"
-    tools:context=".ActivityA">
+    android:background="#C8E6C9"
+    tools:context=".ActivityB">
 
     <TextView
-        android:id="@+id/textViewA"
+        android:id="@+id/textViewB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/text_view_a"
+        android:text="@string/text_view_b"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonNextA"
+        app:layout_constraintBottom_toTopOf="@+id/buttonNextB"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonNextA"
+        android:id="@+id/buttonNextB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewA"
+        android:layout_below="@id/textViewB"
         android:layout_centerHorizontal="true"
-        android:text="@string/button_text_to_b"
+        android:text="@string/button_text_to_c"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

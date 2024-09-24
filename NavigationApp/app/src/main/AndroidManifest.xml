@@ -13,12 +13,17 @@
         android:theme="@style/Theme.NavigationApp"
         tools:targetApi="31">
         <activity
+            android:name=".ActivityC"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityB"
+            android:exported="false" />
+        <activity
             android:name=".ActivityA"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.NavigationApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
