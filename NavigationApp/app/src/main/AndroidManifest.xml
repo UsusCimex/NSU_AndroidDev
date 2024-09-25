@@ -11,6 +11,8 @@
 
         <activity android:name=".ActivityA"
             android:exported="true">
+<!--            android:launchMode="singleTop"-->  <!-- Реализация launchMode в manifest -->
+<!--            android:clearTaskOnLaunch="true">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
