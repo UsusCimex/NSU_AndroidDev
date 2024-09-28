@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MusicPlayer</string>
+    <string name="play_button">Нажмите чтобы включить музыку</string>
+    <string name="play_pause">Включить/Выключить трек</string>
+    <string name="track_name">Название трека</string>
+    <string name="artist_name">Исполнитель</string>
+    <string name="tack_icon_info">Иконка трека</string>
 </resources>
