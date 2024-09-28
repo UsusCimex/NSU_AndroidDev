@@ -23,7 +23,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initData() {
-        trackList = List(20) { Track("No Hay Ley №${it + 1}", "Kali Uchis") }
-        trackAdapter = TrackAdapter(trackList)
+        trackList = List(20) {
+            Track(
+                "No Hay Ley №${it + 1}",
+                "Kali Uchis",
+                R.raw.track
+            )}
+        trackAdapter = TrackAdapter(this, trackList)
     }
 }
