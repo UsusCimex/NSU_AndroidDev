@@ -8,6 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class TrackAdapter(private val trackList: List<Track>) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
+
+    private var currentlyPlayingPosition: Int = RecyclerView.NO_POSITION
+
     inner class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val trackIcon: ImageView = itemView.findViewById(R.id.imageViewIcon)
         val trackName: TextView = itemView.findViewById(R.id.textViewTrackName)
@@ -25,24 +28,40 @@ class TrackAdapter(private val trackList: List<Track>) : RecyclerView.Adapter<Tr
         holder.trackName.text = track.trackName
         holder.artistName.text = track.artistName
 
-        holder.playPauseButton.setImageResource(R.drawable.ic_static_play)
-
-        var isPlaying = false
+        if (position == currentlyPlayingPosition) {
+            holder.playPauseButton.setImageResource(R.drawable.ic_static_pause)
+        } else {
+            holder.playPauseButton.setImageResource(R.drawable.ic_static_play)
+        }
 
         holder.playPauseButton.setOnClickListener {
-            isPlaying = !isPlaying
-
-            val drawable = if (isPlaying) {
-                holder.playPauseButton.setImageResource(R.drawable.ic_pause)
-                holder.playPauseButton.drawable as AnimatedVectorDrawable
+            if (position == currentlyPlayingPosition) {
+                stopPlaying(holder, position)
             } else {
-                holder.playPauseButton.setImageResource(R.drawable.ic_play)
-                holder.playPauseButton.drawable as AnimatedVectorDrawable
+                if (currentlyPlayingPosition != RecyclerView.NO_POSITION) {
+                    notifyItemChanged(currentlyPlayingPosition)
+                }
+                startPlaying(holder, position)
             }
-
-            drawable.start()
         }
     }
 
     override fun getItemCount(): Int = trackList.size
+
+    private fun startPlaying(holder: TrackViewHolder, position: Int) {
+        currentlyPlayingPosition = position
+
+        holder.playPauseButton.setImageResource(R.drawable.ic_pause)
+        val drawable = holder.playPauseButton.drawable as AnimatedVectorDrawable
+        drawable.start()
+    }
+
+    private fun stopPlaying(holder: TrackViewHolder, position: Int) {
+        currentlyPlayingPosition = RecyclerView.NO_POSITION
+
+        holder.playPauseButton.setImageResource(R.drawable.ic_play)
+        val drawable = holder.playPauseButton.drawable as AnimatedVectorDrawable
+        drawable.start()
+    }
+
 }
