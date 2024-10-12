@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Поле для ввода суммы в рублях -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/amountTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Сумма в рублях"
+            app:helperText="Введите сумму в российских рублях">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/amountEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Поле для выбора валюты -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/currencyTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Выберите валюту"
+            android:layout_marginTop="16dp"
+            app:endIconMode="dropdown_menu">
+
+            <AutoCompleteTextView
+                android:id="@+id/currencyAutoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Кнопка конвертации -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/convertButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Конвертировать"
+            android:layout_marginTop="16dp"
+            style="@style/AppTheme.Button" />
+
+        <!-- Отображение результата -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/resultTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Результат"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+</ScrollView>

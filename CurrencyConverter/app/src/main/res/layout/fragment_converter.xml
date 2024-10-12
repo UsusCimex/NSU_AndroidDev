@@ -20,11 +20,13 @@
         android:hint="Сумма в рублях"
         android:inputType="numberDecimal" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/convertButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Конвертировать" />
+        android:text="Конвертировать"
+        android:layout_marginTop="16dp"
+        style="@style/AppTheme.Button" />
 
     <TextView
         android:id="@+id/resultTextView"

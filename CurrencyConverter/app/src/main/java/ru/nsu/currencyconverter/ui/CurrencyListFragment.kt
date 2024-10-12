@@ -1,10 +1,12 @@
 package ru.nsu.currencyconverter.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.CoroutineScope
@@ -21,6 +23,7 @@ class CurrencyListFragment : Fragment() {
     private var _binding: FragmentCurrencyListBinding? = null
     private val binding get() = _binding!!
     private val repository = CurrencyRepository()
+    private var currencySelectionListener: CurrencySelectionListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,9 +32,32 @@ class CurrencyListFragment : Fragment() {
         _binding = FragmentCurrencyListBinding.inflate(inflater, container, false)
         return binding.root
     }
+    override fun onDetach() {
+        super.onDetach()
+        currencySelectionListener = null
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is CurrencySelectionListener) {
+            currencySelectionListener = context
+        } else {
+            throw RuntimeException("$context должен реализовывать интерфейс CurrencySelectionListener")
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         fetchCurrencies()
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (childFragmentManager.backStackEntryCount > 0) {
+                    childFragmentManager.popBackStack()
+                } else {
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+            }
+        })
     }
 
     private fun fetchCurrencies() {
@@ -51,12 +77,7 @@ class CurrencyListFragment : Fragment() {
 
     private fun setupRecyclerView(currencies: List<Currency>) {
         val adapter = CurrencyAdapter(currencies) { currency ->
-            val fragment = ConverterFragment(currency)
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit()
-            Log.d("CurrencyListFragment", "Opened ConverterFragment for ${currency.CharCode}.")
+            currencySelectionListener?.onCurrencySelected(currency)
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
