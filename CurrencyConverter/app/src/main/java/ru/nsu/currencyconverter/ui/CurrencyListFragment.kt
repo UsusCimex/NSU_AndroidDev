@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.nsu.currencyconverter.R
 import ru.nsu.currencyconverter.databinding.FragmentCurrencyListBinding
 import ru.nsu.currencyconverter.model.Currency
 import ru.nsu.currencyconverter.repository.CurrencyRepository
@@ -47,17 +46,6 @@ class CurrencyListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         fetchCurrencies()
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (childFragmentManager.backStackEntryCount > 0) {
-                    childFragmentManager.popBackStack()
-                } else {
-                    isEnabled = false
-                    requireActivity().onBackPressed()
-                }
-            }
-        })
     }
 
     private fun fetchCurrencies() {

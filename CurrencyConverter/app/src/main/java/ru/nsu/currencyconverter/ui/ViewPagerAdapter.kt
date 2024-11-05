@@ -4,7 +4,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class ViewPagerAdapter(activity: FragmentActivity, private val convertFromRubFragment: ConvertFromRubFragment) : FragmentStateAdapter(activity) {
+class ViewPagerAdapter(
+    activity: FragmentActivity,
+    convertFromRubFragment: ConvertFromRubFragment
+) : FragmentStateAdapter(activity) {
 
     private val fragments = listOf(
         CurrencyListFragment(),    // Список валют

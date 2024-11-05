@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity(), CurrencySelectionListener {
 
         viewPagerAdapter = ViewPagerAdapter(this, convertFromRubFragment)
         binding.viewPager.adapter = viewPagerAdapter
+        binding.viewPager.offscreenPageLimit = viewPagerAdapter.itemCount
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = viewPagerAdapter.getFragmentName(position)

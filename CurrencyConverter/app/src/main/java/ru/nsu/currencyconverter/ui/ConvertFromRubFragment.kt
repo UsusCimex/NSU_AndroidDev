@@ -59,12 +59,12 @@ class ConvertFromRubFragment : Fragment() {
                         R.layout.simple_spinner_item,
                         currencyNames
                     )
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
 
                     binding.currencyAutoCompleteTextView.setAdapter(adapter)
 
-                    binding.currencyAutoCompleteTextView.setOnItemClickListener { parent, view, position, id ->
-                        selectedCurrency = currencies[position]
+                    binding.currencyAutoCompleteTextView.setOnItemClickListener {
+                        parent, view, position, id ->  selectedCurrency = currencies[position]
                     }
 
                     binding.convertButton.setOnClickListener {
@@ -102,7 +102,8 @@ class ConvertFromRubFragment : Fragment() {
         if (isValid) {
             val result = (amountInRubles!! / currency!!.Value) * currency.Nominal
             binding.resultTextView.text = String.format("%.2f %s", result, currency.CharCode)
-            Log.d("ConvertFromRubFragment", "Conversion successful: $amountInRubles RUB = $result ${currency.CharCode}")
+            Log.d("ConvertFromRubFragment",
+                "Conversion successful: $amountInRubles RUB = $result ${currency.CharCode}")
         } else {
             binding.resultTextView.text = ""
             Log.e("ConvertFromRubFragment", "Invalid input.")
