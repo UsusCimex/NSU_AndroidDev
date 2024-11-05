@@ -105,7 +105,7 @@ class ConvertFromRubFragment : Fragment() {
             Log.d("ConvertFromRubFragment",
                 "Conversion successful: $amountInRubles RUB = $result ${currency.CharCode}")
         } else {
-            binding.resultTextView.text = ""
+            binding.resultTextView.text = "Ошибка"
             Log.e("ConvertFromRubFragment", "Invalid input.")
         }
     }

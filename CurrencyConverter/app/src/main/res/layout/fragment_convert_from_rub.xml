@@ -3,13 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
     <LinearLayout
         android:orientation="vertical"
-        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
 
         <!-- Поле для ввода суммы в рублях -->
         <com.google.android.material.textfield.TextInputLayout
@@ -17,7 +18,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Сумма в рублях"
-            app:helperText="Введите сумму в российских рублях">
+            app:helperText="Введите сумму в российских рублях"
+            app:helperTextEnabled="true"
+            app:boxStrokeColor="@color/teal_200"
+            app:boxStrokeWidthFocused="2dp"
+            app:boxBackgroundMode="filled"
+            android:layout_marginTop="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/amountEditText"
@@ -32,14 +38,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Выберите валюту"
-            android:layout_marginTop="16dp"
-            app:endIconMode="dropdown_menu">
+            app:boxStrokeColor="@color/teal_200"
+            app:boxStrokeWidthFocused="2dp"
+            app:boxBackgroundMode="filled"
+            app:endIconMode="dropdown_menu"
+            android:layout_marginTop="16dp">
 
             <AutoCompleteTextView
                 android:id="@+id/currencyAutoCompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="none"
+                android:background="@android:color/transparent"
+                android:padding="12dp"
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Кнопка конвертации -->
@@ -49,7 +61,9 @@
             android:layout_height="wrap_content"
             android:text="Конвертировать"
             android:layout_marginTop="16dp"
-            style="@style/AppTheme.Button" />
+            android:textAllCaps="false"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:cornerRadius="8dp" />
 
         <!-- Отображение результата -->
         <com.google.android.material.textview.MaterialTextView
@@ -58,6 +72,8 @@
             android:layout_height="wrap_content"
             android:text="Результат"
             android:textSize="16sp"
-            android:layout_marginTop="16dp" />
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:gravity="center" />
     </LinearLayout>
 </ScrollView>
