@@ -1,5 +1,7 @@
 package ru.nsu.currencyconverter.model
 
+import java.io.Serializable
+
 data class Currency(
     val ID: String,
     val NumCode: String,
@@ -8,4 +10,4 @@ data class Currency(
     val Name: String,
     val Value: Double,
     val Previous: Double
-)
+) : Serializable

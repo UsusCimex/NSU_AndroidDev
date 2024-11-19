@@ -2,8 +2,4 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Настройки темы -->
     </style>
-    <style name="AppTheme.Button" parent="Widget.MaterialComponents.Button">
-        <item name="android:textColor">@color/white</item>
-        <item name="backgroundTint">@color/colorPrimary</item>
-    </style>
 </resources>
