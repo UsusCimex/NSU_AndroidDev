@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Конвертер валют"
+        android:text="@string/converter"
         android:textSize="24sp"
         android:layout_gravity="center_horizontal"
         android:paddingBottom="16dp" />
@@ -18,13 +18,13 @@
         android:id="@+id/buttonSelectFromCurrency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Выбрать валюту для конвертации" />
+        android:text="@string/select_from" />
 
     <Button
         android:id="@+id/buttonSelectToCurrency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Выбрать валюту для получения" />
+        android:text="@string/select_to" />
 
 
     <EditText

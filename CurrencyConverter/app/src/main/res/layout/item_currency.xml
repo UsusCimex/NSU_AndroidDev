@@ -10,11 +10,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:text="Название валюты" />
+        android:text="@string/valute_name" />
 
     <TextView
         android:id="@+id/textViewCurrencyRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Курс к рублю" />
+        android:text="@string/to_rouble" />
 </LinearLayout>

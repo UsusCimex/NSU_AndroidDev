@@ -3,4 +3,10 @@
     <string name="select_currency_from">Выберите валюту</string>
     <string name="select_currency_to">Выберите валюту</string>
     <string name="conversion_result">Результат:\n%.2f %s = %.2f %s</string>
+    <string name="loading">Загрузка...</string>
+    <string name="converter">Конвертер валют</string>
+    <string name="select_from">Выбрать валюту для конвертации</string>
+    <string name="select_to">Выбрать валюту для получения</string>
+    <string name="valute_name">Название валюты</string>
+    <string name="to_rouble">Курс к рублю</string>
 </resources>
