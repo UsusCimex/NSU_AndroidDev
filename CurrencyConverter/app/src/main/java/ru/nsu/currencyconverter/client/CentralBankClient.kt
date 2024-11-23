@@ -14,9 +14,6 @@ class CentralBankClient {
     private val api: CurrencyApiService
     private var currencyList: List<Currency> = emptyList()
 
-    @Volatile
-    private var isRequestRunning = false
-
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://www.cbr-xml-daily.ru/")
@@ -35,14 +32,6 @@ class CentralBankClient {
         onSuccess: (List<Currency>) -> Unit,
         onError: (String) -> Unit
     ) {
-        if (isRequestRunning) {
-            val errorMsg = "Загрузка уже выполняется"
-            Log.w("CentralBankClient", errorMsg)
-            onError(errorMsg)
-            return
-        }
-
-        isRequestRunning = true
         Log.d("CentralBankClient", "Начало загрузки валют")
         try {
             val response = withContext(Dispatchers.IO) { api.getCurrencies() }
@@ -62,7 +51,6 @@ class CentralBankClient {
             Log.e("CentralBankClient", errorMsg)
             onError(errorMsg)
         } finally {
-            isRequestRunning = false
             Log.d("CentralBankClient", "Загрузка валют завершена")
         }
     }

@@ -18,43 +18,20 @@ import ru.nsu.currencyconverter.utils.CurrencyConverter
 
 class MainActivity : AppCompatActivity(), CurrencySelectionListener {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var client: CentralBankClient
-    private lateinit var converter: CurrencyConverter
+    private lateinit var binding: ActivityMainBinding;
+    private var client: CentralBankClient = CentralBankClient()
+    private var converter: CurrencyConverter = CurrencyConverter()
 
     private var selectedFromCurrency: Currency? = null
     private var selectedToCurrency: Currency? = null
 
     private var loadingDialog: AlertDialog? = null
-    private var isLoading: Boolean = false
-
-    private fun showLoadingDialog(message: String = "Загрузка...") {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_loading, null)
-        val loadingMessage = dialogView.findViewById<TextView>(R.id.loadingMessage)
-        loadingMessage.text = message
-
-        loadingDialog = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .setCancelable(false)
-            .create()
-        loadingDialog?.show()
-        Log.d("MainActivity", "Показано диалоговое окно загрузки")
-    }
-
-    private fun hideLoadingDialog() {
-        loadingDialog?.dismiss()
-        loadingDialog = null
-        Log.d("MainActivity", "Диалоговое окно загрузки скрыто")
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("MainActivity", "onCreate вызван")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        client = CentralBankClient()
-        converter = CurrencyConverter()
 
         loadCurrencies()
         setupButtonListeners()
@@ -87,12 +64,6 @@ class MainActivity : AppCompatActivity(), CurrencySelectionListener {
     }
 
     private fun loadCurrencies() {
-        if (isLoading) {
-            Log.d("MainActivity", "Загрузка уже выполняется, выход")
-            return
-        }
-
-        isLoading = true
         showLoadingDialog()
         Log.d("MainActivity", "Начало загрузки валют")
 
@@ -102,12 +73,10 @@ class MainActivity : AppCompatActivity(), CurrencySelectionListener {
                     hideLoadingDialog()
                     binding.buttonSelectFromCurrency.isEnabled = true
                     binding.buttonSelectToCurrency.isEnabled = true
-                    isLoading = false
                     Log.d("MainActivity", "Валюты успешно загружены")
                 },
                 onError = { errorMessage ->
                     hideLoadingDialog()
-                    isLoading = false
                     Log.e("MainActivity", "Ошибка загрузки валют: $errorMessage")
                     showRetryDialog(errorMessage)
                 }
@@ -115,17 +84,38 @@ class MainActivity : AppCompatActivity(), CurrencySelectionListener {
         }
     }
 
+    private fun showLoadingDialog(message: String = "Загрузка...") {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_loading, null)
+        val loadingMessage = dialogView.findViewById<TextView>(R.id.loadingMessage)
+        loadingMessage.text = message
+
+        loadingDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+        loadingDialog?.show()
+        Log.d("MainActivity", "Показано диалоговое окно загрузки")
+    }
+
+    private fun hideLoadingDialog() {
+        loadingDialog?.dismiss()
+        loadingDialog = null
+        Log.d("MainActivity", "Диалоговое окно загрузки скрыто")
+    }
+
     private fun showRetryDialog(errorMessage: String) {
         val dialog = AlertDialog.Builder(this)
             .setTitle("Ошибка загрузки")
             .setMessage("$errorMessage. Попробовать снова?")
-            .setPositiveButton("Повторить") { _, _ ->
+            .setPositiveButton("Повторить") { dialog, _ ->
                 Log.d("MainActivity", "Пользователь выбрал повторную загрузку")
+                dialog.dismiss()
                 loadCurrencies()
             }
-            .setNegativeButton("Отмена") { dialog, _ ->
-                Log.d("MainActivity", "Пользователь отменил загрузку")
+            .setNegativeButton("Выход") { dialog, _ ->
+                Log.d("MainActivity", "Пользователь выбрал выход")
                 dialog.dismiss()
+                finish()
             }
             .create()
 
