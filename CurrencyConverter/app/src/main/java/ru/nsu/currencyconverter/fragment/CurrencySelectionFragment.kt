@@ -1,6 +1,7 @@
 package ru.nsu.currencyconverter.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ class CurrencySelectionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCurrencySelectionBinding.inflate(inflater, container, false)
+        Log.d("CurrencySelectionFragment", "onCreateView вызван")
         return binding.root
     }
 
@@ -32,8 +34,10 @@ class CurrencySelectionFragment : Fragment() {
 
         currencyList = arguments?.getSerializable("currencyList") as List<Currency>
         type = arguments?.getSerializable("type") as CurrencyType
+        Log.d("CurrencySelectionFragment", "Размер списка валют: ${currencyList.size}, тип: $type")
 
         val adapter = CurrencyAdapter(currencyList) { selectedCurrency ->
+            Log.d("CurrencySelectionFragment", "Выбрана валюта: ${selectedCurrency.Name}")
             (activity as? CurrencySelectionListener)?.onCurrencySelected(selectedCurrency, type)
             parentFragmentManager.popBackStack()
         }
@@ -45,6 +49,7 @@ class CurrencySelectionFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        Log.d("CurrencySelectionFragment", "onDestroyView вызван")
     }
 
     companion object {

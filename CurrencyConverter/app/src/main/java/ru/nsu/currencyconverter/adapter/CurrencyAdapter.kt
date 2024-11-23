@@ -1,6 +1,7 @@
 package ru.nsu.currencyconverter.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +14,8 @@ class CurrencyAdapter(
 ) : RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
-        val binding = ItemCurrencyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemCurrencyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CurrencyViewHolder(binding)
     }
 
@@ -23,12 +25,16 @@ class CurrencyAdapter(
 
     override fun getItemCount(): Int = currencies.size
 
-    inner class CurrencyViewHolder(private val binding: ItemCurrencyBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class CurrencyViewHolder(private val binding: ItemCurrencyBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(currency: Currency) {
             binding.textViewCurrencyName.text = currency.Name
             binding.textViewCurrencyRate.text = "Курс к рублю: ${currency.Value}"
-            binding.root.setOnClickListener { onClick(currency) }
+            binding.root.setOnClickListener {
+                Log.d("CurrencyAdapter", "Валюта нажата: ${currency.Name}")
+                onClick(currency)
+            }
         }
     }
 }
