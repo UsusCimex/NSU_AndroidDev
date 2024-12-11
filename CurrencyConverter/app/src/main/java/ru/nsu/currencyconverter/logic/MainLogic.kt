@@ -76,13 +76,6 @@ class MainLogic(
         )
     }
 
-    fun showRetryDialog(errorMessage: String) {
-        callback.showToast(errorMessage)
-        callback.showToast("Повторите попытку или выйдите из приложения")
-        Log.d("MainLogic", "Пользователь выбрал повторную загрузку")
-        retryLoadCurrencies()
-    }
-
     fun handleCurrencySelection(currency: Currency, type: CurrencyType) {
         when (type) {
             CurrencyType.FROM -> {
@@ -99,7 +92,7 @@ class MainLogic(
     }
 
     fun shouldShowCurrencySelection(): Boolean {
-        return !client.getCurrencyList().isEmpty()
+        return client.getCurrencyList().isNotEmpty()
     }
 
     fun getCurrencyList(): List<Currency> {
