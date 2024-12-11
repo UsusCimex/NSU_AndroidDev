@@ -9,8 +9,7 @@ import kotlinx.coroutines.launch
 import ru.nsu.currencyconverter.R
 import ru.nsu.currencyconverter.client.CentralBankClient
 import ru.nsu.currencyconverter.databinding.ActivityMainBinding
-import ru.nsu.currencyconverter.fragment.LoadingDialogFragment
-import ru.nsu.currencyconverter.fragment.RetryDialogFragment
+import ru.nsu.currencyconverter.dialog.DialogManager
 import ru.nsu.currencyconverter.model.Currency
 import ru.nsu.currencyconverter.model.CurrencyType
 import ru.nsu.currencyconverter.utils.CurrencyConverter
@@ -22,7 +21,7 @@ class MainLogic(
     private val converter: CurrencyConverter,
     private val callback: MainLogicCallback
 ) {
-    private var loadingDialog: LoadingDialogFragment? = null
+    private val dialogManager = DialogManager(context as AppCompatActivity)
     var selectedFromCurrency: Currency? = null
     var selectedToCurrency: Currency? = null
 
@@ -33,36 +32,23 @@ class MainLogic(
     }
 
     fun loadCurrencies() {
-        showLoadingDialog()
+        dialogManager.showLoadingDialog()
         Log.d("MainLogic", "Начало загрузки валют")
 
         lifecycleScope.launch {
             client.loadCurrencies(
                 onSuccess = {
-                    hideLoadingDialog()
+                    dialogManager.hideLoadingDialog()
                     callback.onCurrenciesLoaded()
                     Log.d("MainLogic", "Валюты успешно загружены")
                 },
                 onError = { errorMessage ->
-                    hideLoadingDialog()
+                    dialogManager.hideLoadingDialog()
                     Log.e("MainLogic", "Ошибка загрузки валют: $errorMessage")
                     callback.onCurrenciesFailed(errorMessage)
                 }
             )
         }
-    }
-
-    private fun showLoadingDialog(message: String = "Загрузка...") {
-        if (loadingDialog?.isVisible == true) return
-        loadingDialog = LoadingDialogFragment.newInstance(message)
-        loadingDialog?.show((context as AppCompatActivity).supportFragmentManager, "LoadingDialog")
-        Log.d("MainLogic", "Показан диалог загрузки")
-    }
-
-    private fun hideLoadingDialog() {
-        loadingDialog?.dismiss()
-        loadingDialog = null
-        Log.d("MainLogic", "Диалог загрузки скрыт")
     }
 
     fun retryLoadCurrencies() {
@@ -95,19 +81,17 @@ class MainLogic(
     }
 
     fun showRetryDialog(errorMessage: String) {
-        val retryDialog = RetryDialogFragment.newInstance("$errorMessage. Попробовать снова?")
-        retryDialog.setRetryDialogListener(object : RetryDialogFragment.RetryDialogListener {
-            override fun onRetry() {
+        dialogManager.showRetryDialog(
+            errorMessage = errorMessage,
+            onRetry = {
                 Log.d("MainLogic", "Пользователь выбрал повторную загрузку")
                 retryLoadCurrencies()
-            }
-
-            override fun onExit() {
+            },
+            onExit = {
                 Log.d("MainLogic", "Пользователь выбрал выход")
                 (context as AppCompatActivity).finish()
             }
-        })
-        retryDialog.show((context as AppCompatActivity).supportFragmentManager, "RetryDialog")
+        )
     }
 
     fun handleCurrencySelection(
