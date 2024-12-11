@@ -2,10 +2,12 @@ package ru.nsu.currencyconverter
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import ru.nsu.currencyconverter.client.CentralBankClient
 import ru.nsu.currencyconverter.databinding.ActivityMainBinding
+import ru.nsu.currencyconverter.dialog.DialogManager
 import ru.nsu.currencyconverter.fragment.CurrencySelectionFragment
 import ru.nsu.currencyconverter.listener.CurrencySelectionListener
 import ru.nsu.currencyconverter.logic.MainLogic
@@ -17,12 +19,14 @@ class MainActivity : AppCompatActivity(), CurrencySelectionListener, MainLogic.M
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var logic: MainLogic
+    private lateinit var dialogManager: DialogManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        dialogManager = DialogManager(this)
         logic = MainLogic(
             context = this,
             lifecycleScope = lifecycleScope,
@@ -37,18 +41,18 @@ class MainActivity : AppCompatActivity(), CurrencySelectionListener, MainLogic.M
 
     private fun setupButtonListeners() {
         binding.buttonSelectFromCurrency.setOnClickListener {
-            if (logic.client.getCurrencyList().isEmpty()) {
-                logic.retryLoadCurrencies()
-            } else {
+            if (logic.shouldShowCurrencySelection()) {
                 openCurrencySelectionFragment(CurrencyType.FROM)
+            } else {
+                logic.retryLoadCurrencies()
             }
         }
 
         binding.buttonSelectToCurrency.setOnClickListener {
-            if (logic.client.getCurrencyList().isEmpty()) {
-                logic.retryLoadCurrencies()
-            } else {
+            if (logic.shouldShowCurrencySelection()) {
                 openCurrencySelectionFragment(CurrencyType.TO)
+            } else {
+                logic.retryLoadCurrencies()
             }
         }
 
@@ -66,7 +70,7 @@ class MainActivity : AppCompatActivity(), CurrencySelectionListener, MainLogic.M
             androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
         )
 
-        val fragment = CurrencySelectionFragment.newInstance(type, logic.client.getCurrencyList())
+        val fragment = CurrencySelectionFragment.newInstance(type, logic.getCurrencyList())
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment, fragmentTag)
             .addToBackStack(null)
@@ -75,7 +79,7 @@ class MainActivity : AppCompatActivity(), CurrencySelectionListener, MainLogic.M
     }
 
     override fun onCurrencySelected(currency: Currency, type: CurrencyType) {
-        logic.handleCurrencySelection(currency, type, binding)
+        logic.handleCurrencySelection(currency, type)
     }
 
     override fun onCurrenciesLoaded() {
@@ -84,11 +88,30 @@ class MainActivity : AppCompatActivity(), CurrencySelectionListener, MainLogic.M
     }
 
     override fun onCurrenciesFailed(errorMessage: String) {
-        logic.showRetryDialog(errorMessage)
+        dialogManager.showRetryDialog(
+            errorMessage = errorMessage,
+            onRetry = { logic.retryLoadCurrencies() },
+            onExit = { finish() }
+        )
     }
 
     override fun onConversionResult(result: String) {
         binding.textViewResult.text = result
     }
-}
 
+    override fun updateFromCurrencyText(name: String) {
+        binding.buttonSelectFromCurrency.text = name
+    }
+
+    override fun updateToCurrencyText(name: String) {
+        binding.buttonSelectToCurrency.text = name
+    }
+
+    override fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun finishActivity() {
+        finish()
+    }
+}
